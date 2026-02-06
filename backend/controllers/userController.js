@@ -8,12 +8,24 @@ import { v2 as cloudinary } from 'cloudinary'
 import stripe from "stripe";
 import razorpay from 'razorpay';
 
-// Gateway Initialize
-const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY)
-const razorpayInstance = new razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-})
+// ---- Payment Gateways ----
+let stripeInstance = null;
+let razorpayInstance = null;
+
+// Stripe (optional)
+if (process.env.STRIPE_SECRET_KEY) {
+    const Stripe = stripe.default || stripe; // ESM / CJS safe
+    stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
+}
+
+// Razorpay (optional)
+if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+    const Razorpay = razorpay.default || razorpay; // ESM / CJS safe
+    razorpayInstance = new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID,
+        key_secret: process.env.RAZORPAY_KEY_SECRET,
+    });
+}
 
 // API to register user
 const registerUser = async (req, res) => {
