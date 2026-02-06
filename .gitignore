@@ -30,5 +30,5 @@ Thumbs.db
 .cache/
 .tmp/
 
-# Documents (ignore project instructions PDF)
-How_To_Run_Project.pdf
+# Documents 
+readme.pdf
